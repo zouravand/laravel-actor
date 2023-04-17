@@ -31,7 +31,7 @@
         "Tedon\\LaravelActor\\Providers\\ActorServiceProvider"
       ],
       "aliases": {
-        "Actor": "Tedon\\LaravelActor\\Facades\\Menual"
+        "Actor": "Tedon\\LaravelActor\\Facades\\Actor"
       }
     }
   },
