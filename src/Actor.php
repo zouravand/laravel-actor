@@ -10,7 +10,7 @@ use Tedon\LaravelActor\Helpers\NamingHelper;
  */
 class Actor
 {
-    protected function defineMacros(): void
+    public function defineMacros(): void
     {
         $this->defineBaseMacro();
         $this->defineCustomMacros();
