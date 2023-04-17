@@ -43,7 +43,7 @@ class Actor
 
     private function defineCustomMacros(): void
     {
-        foreach (config('laravel-actor.custom-macros') as $customMacro) {
+        foreach (config('laravel-actor.custom-macros', []) as $customMacro) {
             Blueprint::macro(NamingHelper::getActor($customMacro), function ($hasType = true, $hasTimestamp = false, $indexName = null, $shouldIndex = false) use ($customMacro) {
                 return $this->actor($customMacro, $hasType, $hasTimestamp, $indexName, $shouldIndex);
             });
