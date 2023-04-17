@@ -18,7 +18,8 @@
     "Tedon"
   ],
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "davechild/textstatistics": "^1.0"
   },
   "require-dev": {
     "orchestra/canvas": "^7.4",
@@ -37,10 +38,7 @@
   "autoload": {
     "psr-4": {
       "Tedon\\LaravelActor\\": "src"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+    }
   },
   "autoload-dev": {
   },
