@@ -1,0 +1,48 @@
+{
+  "name": "tedon/laravel-actor",
+  "description": "A brand option to have specific action fields in model.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pouya Zouravand",
+      "email": "pouya.zuravand@gmail.com"
+    }
+  ],
+  "type": "library",
+  "keywords": [
+    "Laravel",
+    "Action",
+    "LaravelAction",
+    "Actor",
+    "LaravelActor",
+    "Tedon"
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "orchestra/canvas": "^7.4",
+    "orchestra/testbench": "^7.16"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Tedon\\LaravelActor\\Providers\\ActorServiceProvider"
+      ],
+      "aliases": {
+        "Actor": "Tedon\\LaravelActor\\Facades\\Menual"
+      }
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Tedon\\LaravelActor\\": "src"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+  },
+  "minimum-stablity": "dev"
+}
