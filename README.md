@@ -3,20 +3,21 @@
 A brand option to have specific action fields in model.
 
 
-### Installation
+## Installation
 In order to add the capability to your laravel application, you should require it via composer.
 
 ```shell
 composer require tedon/laravel-actor
 ```
 
-#### Publish configuration file
+### Publish configuration file
 By publishing configuration file, it is possible to edit predefined custom shortcut macros.
 
 ```shell
 php artisan vendor:publish --provider="Tedon\LaravelActor\Providers\ActorServiceProvider" --tag="actor-config"
 ```
 
+## Usage
 ### Basic Usage
 You can use actor as a macro in migrations. Verb form of action is passed as the first argument.
 
@@ -44,5 +45,5 @@ return [
 
 In the provided example, the `create` macro is remove and the `approve` macro is added to the code;
 
-### License
+## License
 The Laravel Actor package is open-sourced software licensed under the MIT license.
