@@ -14,6 +14,10 @@ class ActorServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->publishes([
+            __DIR__ . '/../../resources/config/laravel-actor.php' => config_path('laravel-actor.php')
+        ], 'actor-config');
+
         AboutCommand::add('Laravel Actor', fn() => ['Version' => '0.0.1']);
 
         $this->defineActorBlueprintMacro();
