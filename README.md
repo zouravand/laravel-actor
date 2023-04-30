@@ -119,12 +119,12 @@ getActorType(string $action): ?string;
 //  example output: "\App\Models\User"
 ```
 
-#### Get Actor ID:
+#### Get Acted At:
 
-Retrieve actor id of given action
+Retrieve the time when given action is acted at.
 
 ```php
-getActedAt(string $action): ?Carbon; // Retrieve the time when given action is acted at.
+getActedAt(string $action): ?Carbon;
 
 //  example output: "2023-04-30 15:30:04"
 ```
