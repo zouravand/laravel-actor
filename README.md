@@ -152,6 +152,26 @@ getAct(string $action): array;
 
 ```
 
+## Set Actor Data
+
+The action field can be set with methods below.
+
+### Touch Action
+
+This method is provided to set all action fields at the same time with the authenticated user.
+
+```php
+touchAction(string $action, bool $isForce = false): void;
+```
+
+### Clear Action
+
+This method is provided to clear all action fields at the same time.
+
+```php
+cleanAction(string $action): void;
+```
+
 ## License
 
 The Laravel Actor package is open-sourced software licensed under the MIT license.

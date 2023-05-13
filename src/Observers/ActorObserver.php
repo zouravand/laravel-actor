@@ -17,10 +17,8 @@ class ActorObserver
         if (Arr::has($actions, 'actions') && in_array('create', $actions['actions'])) {
             /** @var ?Authenticatable $user */
             $user = Auth::user();
-            if ($user && !empty($user->id)) {
-                $model->{NamingHelper::getActor('create') . '_id'} = $user->id;
-                $model->{NamingHelper::getActor('create') . '_type'} = get_class($user);
-                $model->save();
+            if ($user && !empty($user->getAuthIdentifier())) {
+                $this->touchAction('create', true);
             }
         }
     }
@@ -32,10 +30,8 @@ class ActorObserver
         if (Arr::has($actions, 'actions') && in_array('edit', $actions['actions'])) {
             /** @var ?Authenticatable $user */
             $user = Auth::user();
-            if ($user && !empty($user->id)) {
-                $model->{NamingHelper::getActor('edit') . '_id'} = $user->id;
-                $model->{NamingHelper::getActor('edit') . '_type'} = get_class($user);
-                $model->save();
+            if ($user && !empty($user->getAuthIdentifier())) {
+                $this->touchAction('edit', true);
             }
         }
     }
