@@ -75,6 +75,14 @@ trait Actorable
         $this->save();
     }
 
+    public function cleanAction(string $action): void
+    {
+        $this->{NamingHelper::getActor($action) . '_id'} = null;
+        $this->{NamingHelper::getActor($action) . '_type'} = null;
+        $this->{NamingHelper::getActed($action) . '_at'} = null;
+        $this->save();
+    }
+
     public function actorable(): array
     {
         return [
