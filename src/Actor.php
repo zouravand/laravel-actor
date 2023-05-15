@@ -58,7 +58,7 @@ class Actor
         foreach (config('laravel-actor.custom-macros', []) as $customMacro) {
             Blueprint::macro(
                 NamingHelper::getActor($customMacro),
-                function ($hasType = true, $hasTimestamp = false, $indexName = null, $shouldIndex = false) use (
+                function ($hasType = true, $hasTimestamp = true, $indexName = null, $shouldIndex = false) use (
                     $customMacro
                 ) {
                     return $this->actor($customMacro, $hasType, $hasTimestamp, $indexName, $shouldIndex);
