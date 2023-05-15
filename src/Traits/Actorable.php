@@ -66,14 +66,14 @@ trait Actorable
         if ($user && !empty($user->getAuthIdentifier())) {
             $this->{NamingHelper::getActor($action) . '_id'} = $user->getAuthIdentifier();
             $this->{NamingHelper::getActor($action) . '_type'} = get_class($user);
-            $this->save();
+            $this->saveQuietly();
         }
     }
 
     private function setActed(string $action): void
     {
         $this->{NamingHelper::getActed($action) . '_at'} = Carbon::now();
-        $this->save();
+        $this->saveQuietly();
     }
 
     public function cleanAction(string $action): void
@@ -81,7 +81,7 @@ trait Actorable
         $this->{NamingHelper::getActor($action) . '_id'} = null;
         $this->{NamingHelper::getActor($action) . '_type'} = null;
         $this->{NamingHelper::getActed($action) . '_at'} = null;
-        $this->save();
+        $this->saveQuietly();
     }
 
     public function isActedBy(string $action, ?Authenticatable $user): bool
