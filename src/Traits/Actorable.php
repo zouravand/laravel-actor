@@ -83,6 +83,16 @@ trait Actorable
         $this->save();
     }
 
+    public function isActedBy(string $action, ?Authenticatable $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return ($user->getAuthIdentifier() == $this->{NamingHelper::getActor($action) . '_id'}
+            && get_class($user) == $this->{NamingHelper::getActor($action) . '_type'});
+    }
+
     public function actorable(): array
     {
         return [
