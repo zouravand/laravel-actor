@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Tedon\LaravelActor\Helpers\NamingHelper;
+use Tedon\LaravelActor\Traits\Actorable;
 
 class ActorObserver
 {
@@ -14,11 +14,12 @@ class ActorObserver
     {
         $actions = $this->getActorSetting($model);
 
+        /** @var Actorable $model */
         if (Arr::has($actions, 'actions') && in_array('create', $actions['actions'])) {
             /** @var ?Authenticatable $user */
             $user = Auth::user();
             if ($user && !empty($user->getAuthIdentifier())) {
-                $this->touchAction('create', true);
+                $model->touchAction('create', true);
             }
         }
     }
@@ -27,17 +28,19 @@ class ActorObserver
     {
         $actions = $this->getActorSetting($model);
 
+        /** @var Actorable $model */
         if (Arr::has($actions, 'actions') && in_array('edit', $actions['actions'])) {
             /** @var ?Authenticatable $user */
             $user = Auth::user();
             if ($user && !empty($user->getAuthIdentifier())) {
-                $this->touchAction('edit', true);
+                $model->touchAction('edit', true);
             }
         }
     }
 
     public function getActorSetting(Model $model): array
     {
+        /** @var Actorable $model */
         return $model->actorable() ?? [];
     }
 }
