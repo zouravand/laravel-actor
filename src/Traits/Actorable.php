@@ -4,6 +4,7 @@ namespace Tedon\LaravelActor\Traits;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Tedon\LaravelActor\Helpers\NamingHelper;
@@ -91,6 +92,14 @@ trait Actorable
 
         return ($user->getAuthIdentifier() == $this->{NamingHelper::getActor($action) . '_id'}
             && get_class($user) == $this->{NamingHelper::getActor($action) . '_type'});
+    }
+
+    public function scopeActedBy(Builder $query, string $action, Authenticatable $user): void
+    {
+        $query->where(function ($query) use ($action, $user) {
+            $query->where(NamingHelper::getActor($action) . '_id', $user->getAuthIdentifier());
+            $query->where(NamingHelper::getActor($action) . '_type', get_class($user));
+        });
     }
 
     public function actorable(): array
