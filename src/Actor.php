@@ -3,6 +3,7 @@
 namespace Tedon\LaravelActor;
 
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Arr;
 use Tedon\LaravelActor\Helpers\NamingHelper;
 
 /**
@@ -31,24 +32,30 @@ class Actor
                 $actor = NamingHelper::getActor($action);
                 $acted = NamingHelper::getActed($action);
 
-                $field = $this->unsignedBigInteger("{$actor}_id")->nullable();
-                if ($hasType) {
-                    $this->string("{$actor}_type")->nullable();
-                }
-
-                if ($hasTimestamp) {
-                    $this->timestamp("{$acted}_at")->nullable();
-                }
-
-                if ($shouldIndex) {
+                if (!in_array("{$acted}_id", Arr::pluck($this->getColumns(), 'name'))) {
+                    $field = $this->unsignedBigInteger("{$actor}_id")->nullable();
                     if ($hasType) {
-                        $this->index(["{$actor}_type", "{$actor}_id"], $indexName);
-                    } else {
-                        $this->index(["{$actor}_id"], $indexName);
+                        if (!in_array("{$acted}_type", Arr::pluck($this->getColumns(), 'name'))) {
+                            $this->string("{$actor}_type")->nullable();
+                        }
                     }
-                }
+                    if ($hasTimestamp) {
+                        if (!in_array("{$acted}_at", Arr::pluck($this->getColumns(), 'name'))) {
+                            $this->timestamp("{$acted}_at")->nullable();
+                        }
+                    }
 
-                return $field;
+                    if ($shouldIndex) {
+                        if ($hasType) {
+                            $this->index(["{$actor}_type", "{$actor}_id"], $indexName);
+                        } else {
+                            $this->index(["{$actor}_id"], $indexName);
+                        }
+                    }
+
+                    return $field;
+                }
+                return null;
             }
         );
     }

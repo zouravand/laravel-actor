@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Tedon\LaravelActor\Helpers\NamingHelper;
 use Tedon\LaravelActor\Observers\ActorObserver;
 
@@ -64,23 +65,35 @@ trait Actorable
     private function setActor(string $action, ?Authenticatable $user): void
     {
         if ($user && !empty($user->getAuthIdentifier())) {
-            $this->{NamingHelper::getActor($action) . '_id'} = $user->getAuthIdentifier();
-            $this->{NamingHelper::getActor($action) . '_type'} = get_class($user);
+            if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action) . '_id')) {
+                $this->{NamingHelper::getActor($action) . '_id'} = $user->getAuthIdentifier();
+            }
+            if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action) . '_type')) {
+                $this->{NamingHelper::getActor($action) . '_type'} = get_class($user);
+            }
             $this->saveQuietly();
         }
     }
 
     private function setActed(string $action): void
     {
-        $this->{NamingHelper::getActed($action) . '_at'} = Carbon::now();
+        if (Schema::hasColumn($this->getTable(), NamingHelper::getActed($action) . '_at')) {
+            $this->{NamingHelper::getActed($action) . '_at'} = Carbon::now();
+        }
         $this->saveQuietly();
     }
 
     public function cleanAction(string $action): void
     {
-        $this->{NamingHelper::getActor($action) . '_id'} = null;
-        $this->{NamingHelper::getActor($action) . '_type'} = null;
-        $this->{NamingHelper::getActed($action) . '_at'} = null;
+        if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action) . '_id')) {
+            $this->{NamingHelper::getActor($action) . '_id'} = null;
+        }
+        if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action) . '_type')) {
+            $this->{NamingHelper::getActor($action) . '_type'} = null;
+        }
+        if (Schema::hasColumn($this->getTable(), NamingHelper::getActed($action) . '_at')) {
+            $this->{NamingHelper::getActed($action) . '_at'} = null;
+        }
         $this->saveQuietly();
     }
 
