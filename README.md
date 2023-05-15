@@ -172,6 +172,28 @@ This method is provided to clear all action fields at the same time.
 cleanAction(string $action): void;
 ```
 
+## Check and filter Actor Data
+These accessories are used for checking and filtering action data
+
+### Check If Is Acted By
+This method is used for checking if the model is acted by specific user on a specific action
+
+```php
+isActedBy(string $action, ?Authenticatable $user): bool;
+```
+returns `true` if the model is acted on the action by the given user.
+
+### Acted By Scope
+There is a scope provided for filtering the actorable model data to get record with the given actor on the given action.
+
+```php
+$query
+...
+    ->actedBy('create', $user)
+...
+```
+The expression above scopes actorable model query with the given action and given authenticatable user.
+
 ## License
 
 The Laravel Actor package is open-sourced software licensed under the MIT license.
