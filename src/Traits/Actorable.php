@@ -68,7 +68,7 @@ trait Actorable
             return null;
         }
 
-        return $this->{NamingHelper::getActed($action).'_at'} ?? null;
+        return $this->{NamingHelper::getActed($action).'_at'} ? Carbon::parse($this->{NamingHelper::getActed($action).'_at'}) : null;
     }
 
     public function touchAction(string $action, bool $isForce = false): void
