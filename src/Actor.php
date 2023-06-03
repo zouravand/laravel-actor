@@ -36,7 +36,11 @@ class Actor
                     $field = $this->unsignedBigInteger("{$actor}_id")->nullable();
                     if ($hasType) {
                         if (!in_array("{$acted}_type", Arr::pluck($this->getColumns(), 'name'))) {
-                            $this->string("{$actor}_type")->nullable();
+                            if (config('laravel-actor.use_type_mapping', false)) {
+                                $this->unsignedTinyInteger("{$actor}_type")->nullable();
+                            } else {
+                                $this->string("{$actor}_type")->nullable();
+                            }
                         }
                     }
                     if ($hasTimestamp) {
