@@ -3,6 +3,7 @@
 namespace Tedon\LaravelActor\Traits;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,9 @@ use Tedon\LaravelActor\Observers\ActorObserver;
 
 /**
  * @method static observe(string $class)
+ * @method static where(string $field, $id)
+ * @method getTable()
+ * @property int $id
  */
 trait Actorable
 {
@@ -36,13 +40,31 @@ trait Actorable
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function getActor(string $action, ?int $customOffset = null): ?Model
     {
         if (!$this->getActorType($action) || !$this->isRecentlyActed($action, $customOffset)) {
             return null;
         }
 
-        return $this->getActorType($action)::find($this->getActorId($action));
+        return $this->getActorTypeModel($action)::query()
+            ->find($this->getActorId($action));
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getActorTypeModel($action): Model
+    {
+        $model = app($this->getActorType($action));
+
+        if (!$model instanceof Model) {
+            throw new Exception("Class {$this->getActorType($action)} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+        }
+
+        return $model;
     }
 
     public function getActorId(string $action, ?int $customOffset = null): int|string|null
