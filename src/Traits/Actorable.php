@@ -89,36 +89,39 @@ trait Actorable
     private function setActor(string $action, ?Authenticatable $user): void
     {
         if ($user && !empty($user->getAuthIdentifier())) {
+            $parameters = [];
             if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action).'_id')) {
-                $this->{NamingHelper::getActor($action).'_id'} = $user->getAuthIdentifier();
+                $parameters[NamingHelper::getActor($action).'_id'] = $user->getAuthIdentifier();
             }
             if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action).'_type')) {
-                $this->{NamingHelper::getActor($action).'_type'} = $this->getActorTypeValue(get_class($user));
+                $parameters[NamingHelper::getActor($action).'_type'] = $this->getActorTypeValue(get_class($user));
             }
-            $this->saveQuietly();
+            static::where('id', $this->id)->update($parameters);
         }
     }
 
     private function setActed(string $action): void
     {
         if (Schema::hasColumn($this->getTable(), NamingHelper::getActed($action).'_at')) {
-            $this->{NamingHelper::getActed($action).'_at'} = Carbon::now();
+            $parameters = [];
+            $parameters[NamingHelper::getActed($action).'_at'] = Carbon::now();
+            static::where('id', $this->id)->update($parameters);
         }
-        $this->saveQuietly();
     }
 
     public function cleanAction(string $action): void
     {
+        $parameters = [];
         if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action).'_id')) {
-            $this->{NamingHelper::getActor($action).'_id'} = null;
+            $parameters[NamingHelper::getActor($action).'_id'] = null;
         }
         if (Schema::hasColumn($this->getTable(), NamingHelper::getActor($action).'_type')) {
-            $this->{NamingHelper::getActor($action).'_type'} = null;
+            $parameters[NamingHelper::getActor($action).'_type'] = null;
         }
         if (Schema::hasColumn($this->getTable(), NamingHelper::getActed($action).'_at')) {
-            $this->{NamingHelper::getActed($action).'_at'} = null;
+            $parameters[NamingHelper::getActed($action).'_at'] = null;
         }
-        $this->saveQuietly();
+        static::where('id', $this->id)->update($parameters);
     }
 
     public function isActedBy(string $action, ?Authenticatable $user, ?int $customOffset = null): bool
